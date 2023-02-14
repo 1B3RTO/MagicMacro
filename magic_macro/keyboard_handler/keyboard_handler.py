@@ -9,6 +9,9 @@ class KeyboardHandler:
     _all_keys: list[SingleKey] = None
 
     def __init__(self):
+        self._encoder_position = 0
+        self._all_keys = list()
+
         # Buttons from 0-11
         # Button 12 is Rotary encoder PRESS
         # Button 13 is Rotary encoder ACW rotation

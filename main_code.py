@@ -22,6 +22,8 @@ def test_run():
 
     a = MagicMacroPad()
 
+    a.main_loop()
+
     while True:
         time.sleep(1.0)
 

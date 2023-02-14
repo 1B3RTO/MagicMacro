@@ -11,3 +11,6 @@ KEYCODE = None
 
 # Keyboard Handler
 LONG_DELAY_MS = 500
+
+# Action Queue
+DEFAULT_ACTION_DELAY_MS = 10
