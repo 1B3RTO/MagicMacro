@@ -14,3 +14,6 @@ LONG_DELAY_MS = 500
 
 # Action Queue
 DEFAULT_ACTION_DELAY_MS = 10
+
+# Macro Board Handler
+MACRO_FOLDER = '/macros'
