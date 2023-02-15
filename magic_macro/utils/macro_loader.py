@@ -4,7 +4,7 @@ from magic_macro.config import MACRO_FOLDER
 from magic_macro.macro_board_handler.macro_board import MacroBoard
 
 
-def load_macros_from_folder(folder_path=MACRO_FOLDER):
+def load_macros_from_folder(folder_path=MACRO_FOLDER) -> list[MacroBoard]:
     macro_boards = []
     files = os.listdir(folder_path)
     files.sort()
@@ -18,3 +18,5 @@ def load_macros_from_folder(folder_path=MACRO_FOLDER):
                 print("ERROR in", filename)
                 import traceback
                 traceback.print_exception(err, err, err.__traceback__)
+
+    return macro_boards

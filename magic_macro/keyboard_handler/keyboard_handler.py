@@ -1,7 +1,7 @@
 from magic_macro.keyboard_handler.single_key import SingleKey
 from adafruit_macropad import MacroPad
-from magic_macro.utils.enums import TriggerType
-from magic_macro.utils.context import macro_context
+from magic_macro.utils.enums import TriggerType, Topics
+from magic_macro.utils.context import context
 
 
 class KeyboardHandler:
@@ -21,7 +21,7 @@ class KeyboardHandler:
 
     @staticmethod
     def __event_callback(caller_id, trigger_type, timestamp):
-        macro_context.emit(caller_id, trigger_type, timestamp)
+        context.emit(Topics.BUTTON_PRESS, caller_id, trigger_type, timestamp)
 
     def update_keyboard(self, timestamp, macropad):
         rotary_btn_pressed, rotary_btn_released, encoder_position, encoder_delta, btn_event = \

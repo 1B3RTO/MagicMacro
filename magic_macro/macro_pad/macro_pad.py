@@ -3,6 +3,7 @@ import time
 
 from magic_macro.config import KEYBOARD_LAYOUT, KEYCODE
 from magic_macro.keyboard_handler.keyboard_handler import KeyboardHandler
+from magic_macro.macro_board_handler.macro_board_handler import MacroBoardHandler
 
 
 class MagicMacroPad(object):
@@ -23,6 +24,7 @@ class MagicMacroPad(object):
         self._macropad_library = macropad_library
         self.__build_macropad()
         self._keyboard_handler = KeyboardHandler()
+        self._macro_board_handler = MacroBoardHandler(self._macropad)
 
     def __build_macropad(self):
         if KEYBOARD_LAYOUT is None or KEYCODE is None:

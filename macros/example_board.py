@@ -7,43 +7,43 @@ def nice_meme():
     mega_action.play_tone(262)
     mega_action.wait(2000)
     mega_action.stop_tone()
-    return mega_action.get_atomic_list()
+    return mega_action
 
 
 def increase_brightness():
     mega_action = ActionList()
     mega_action.increase_display_brightness(0.1)
-    return mega_action.get_atomic_list()
+    return mega_action
 
 
 def decrease_brightness():
     mega_action = ActionList()
     mega_action.increase_display_brightness(-0.1)
-    return mega_action.get_atomic_list()
+    return mega_action
 
 
 def decrease_k_brightness():
     mega_action = ActionList()
     mega_action.increase_keyboard_brightness(-0.01)
-    return mega_action.get_atomic_list()
+    return mega_action
 
 
 def increase_k_brightness():
     mega_action = ActionList()
     mega_action.increase_keyboard_brightness(0.01)
-    return mega_action.get_atomic_list()
+    return mega_action
 
 
 def rotary_encoder_display_brightness():
     mega_action = ActionList()
     mega_action.override_rotary_encoder(increase_brightness, decrease_brightness)
-    return mega_action.get_atomic_list()
+    return mega_action
 
 
 def rotary_encoder_keyboard_brightness():
     mega_action = ActionList()
     mega_action.override_rotary_encoder(increase_k_brightness, decrease_k_brightness)
-    return mega_action.get_atomic_list()
+    return mega_action
 
 
 def do_nothing() -> ActionList:
@@ -52,7 +52,7 @@ def do_nothing() -> ActionList:
 
 
 board = {
-    "name": "Example Board",
+    "title": "Example Board",
     "macros": [
         {
             "button": 0,

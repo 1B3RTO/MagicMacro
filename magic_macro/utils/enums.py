@@ -31,3 +31,4 @@ class Topics:
     MACRO_END = 0
     MACRO_START = 1
     OVERRIDE_ROTARY = 2
+    BUTTON_PRESS = 3

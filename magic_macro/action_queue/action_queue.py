@@ -1,4 +1,4 @@
-from magic_macro.utils.context import macro_context, system_context
+from magic_macro.utils.context import context
 from magic_macro.action_queue.queue import Queue
 
 
