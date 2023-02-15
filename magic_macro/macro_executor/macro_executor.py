@@ -2,7 +2,7 @@ from adafruit_macropad import MacroPad
 
 from magic_macro.action_queue.queue_elem import *
 from magic_macro.utils.enums import Topics
-from magic_macro.utils.context import context
+from magic_macro.utils.context import system_context
 
 
 class MacroExecutor:
@@ -56,13 +56,13 @@ class MacroExecutor:
             macropad.pixels.brightness = max(min(new_brightness, 1.0), 0.0)
 
         elif isinstance(atomic_action, MacroEnd):
-            context.emit(Topics.MACRO_END, atomic_action.action_id)
+            system_context.emit(Topics.MACRO_END, atomic_action.action_id)
 
         elif isinstance(atomic_action, OverrideRotaryEncoder):
-            context.emit(Topics.OVERRIDE_ROTARY,
-                         atomic_action.action_id,
-                         atomic_action.acw_method,
-                         atomic_action.cw_method)
+            system_context.emit(Topics.OVERRIDE_ROTARY,
+                                atomic_action.action_id,
+                                atomic_action.acw_method,
+                                atomic_action.cw_method)
 
         elif isinstance(atomic_action, MacroStart):
-            context.emit(Topics.MACRO_START, atomic_action.action_id)
+            system_context.emit(Topics.MACRO_START, atomic_action.action_id)

@@ -28,10 +28,6 @@ class TriggerType:
 
 
 class Topics:
-    NO_PRESS = 0
-    ON_INITIAL_PRESS = 1
-    ON_SHORT_PRESS = 2
-    ON_LONG_PRESS = 3
-    MACRO_END = 4
-    MACRO_START = 5
-    OVERRIDE_ROTARY = 6
+    MACRO_END = 0
+    MACRO_START = 1
+    OVERRIDE_ROTARY = 2
