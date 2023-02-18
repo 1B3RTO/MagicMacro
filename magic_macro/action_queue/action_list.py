@@ -119,10 +119,19 @@ class ActionList:
         self._actions.append(action_to_add)
         self.__increment_offset(self._delay)
 
-    def get_atomic_list(self):
-        action_to_add = MacroEnd()
-        action_to_add.timestamp = self._offset
+    def get_atomic_list(self, caller_id, timestamp):
+        result = []
 
-        self._actions.append(action_to_add)
-        self.__increment_offset(self._delay)
-        return self._actions
+        end_mark = MacroEnd()
+        end_mark.action_id = caller_id
+        end_mark.timestamp = self._offset + timestamp
+
+        for elem in self._actions:
+            clone = elem.__copy__()
+            clone.action_id = caller_id
+            clone.timestamp += timestamp
+            result.append(clone)
+
+        result += [end_mark]
+
+        return result
