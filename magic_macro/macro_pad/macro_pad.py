@@ -4,6 +4,7 @@ import time
 from magic_macro.config import KEYBOARD_LAYOUT, KEYCODE
 from magic_macro.keyboard_handler.keyboard_handler import KeyboardHandler
 from magic_macro.macro_board_handler.macro_board_handler import MacroBoardHandler
+from magic_macro.action_queue.action_queue import ActionQueue
 
 
 class MagicMacroPad(object):
@@ -11,6 +12,7 @@ class MagicMacroPad(object):
     _macropad = None
 
     _keyboard_handler: KeyboardHandler = None
+    _action_queue: ActionQueue = None
 
     def __new__(cls, *args):
         if cls._instance is None:
@@ -25,6 +27,7 @@ class MagicMacroPad(object):
         self.__build_macropad()
         self._keyboard_handler = KeyboardHandler()
         self._macro_board_handler = MacroBoardHandler(self._macropad)
+        self._action_queue = ActionQueue()
 
     def __build_macropad(self):
         if KEYBOARD_LAYOUT is None or KEYCODE is None:
@@ -48,4 +51,4 @@ class MagicMacroPad(object):
             self._keyboard_handler.update_keyboard(timestamp, self._macropad)
 
             # Action queue update
-            # TODO: Check here the action queue
+            self._action_queue.check_queue(timestamp)

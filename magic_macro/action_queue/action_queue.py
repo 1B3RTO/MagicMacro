@@ -14,7 +14,8 @@ class ActionQueue:
         print("Adding to the queue: {} QueueElems".format(len(atomic_list)))
         self._queue.add_list(atomic_list)
 
-    def check_queue(self):
-        pass
-
-    pass
+    def check_queue(self, timestamp):
+        elems_to_exec = self._queue.get_until(timestamp)
+        if len(elems_to_exec) > 0:
+            print("Elems to exec", len(elems_to_exec))
+        # TODO: exec the queue elements

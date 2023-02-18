@@ -66,6 +66,7 @@ class MacroBoardHandler:
             # Every other button
             else:
                 # get the action buttons from the selected combination of button - trigger_type
+                print("caller_id", caller_id, "trigger_type", trigger_type)
                 buttons_to_queue = selected_board.get_actions(caller_id, trigger_type)
 
                 # For each action button append their methods to the action_methods list

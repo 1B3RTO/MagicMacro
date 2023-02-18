@@ -24,7 +24,9 @@ class Queue:
                 # just add the action to exec in the result, not the timestamp
                 result.append(self._queue.pop(0))
 
-        print(f"Remaining queue len: {len(self._queue)}")
+        if len(self._queue) > 0 or len(result) > 0:
+            print(f"Remaining queue len: {len(self._queue)}")
+            print(f"Requested queue elems: {len(result)}")
 
         return result
 
