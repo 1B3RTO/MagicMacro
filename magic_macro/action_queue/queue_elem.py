@@ -2,6 +2,11 @@ class QueueElem:
     action_id: int = None
     timestamp: int = None
 
+    def __copy__(self):
+        obj = type(self).__new__(self.__class__)
+        obj.__dict__.update(self.__dict__)
+        return obj
+
 
 class WriteStringAction(QueueElem):
     text: str = None
