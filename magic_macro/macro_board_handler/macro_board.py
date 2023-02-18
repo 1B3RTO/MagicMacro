@@ -1,5 +1,6 @@
 from magic_macro.macro_board_handler.button import Button
 from magic_macro.macro_board_handler.button_action import ButtonAction
+from magic_macro.utils.enums import TriggerType
 
 
 class MacroBoard:
@@ -13,14 +14,14 @@ class MacroBoard:
             assert 0 <= button <= 11
             self._buttons.update({button: Button(**macro)})
 
-    def get_actions(self, button, trigger_type):
+    def get_actions(self, button: int, trigger_type: int) -> list[ButtonAction]:
         try:
             btn = self._buttons.get(button)
             actions: list[ButtonAction] = btn.actions.get(trigger_type)
 
             return actions
         except KeyError:
-            return None
+            return []
 
     def get_names(self):
         labels = []
