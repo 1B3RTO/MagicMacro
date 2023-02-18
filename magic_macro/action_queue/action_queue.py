@@ -9,11 +9,10 @@ class ActionQueue:
         self._queue = Queue()
 
         context.subscribe_single(Topics.ADD_TO_QUEUE, self.__on_add_to_queue)
-        pass
 
     def __on_add_to_queue(self, atomic_list: list[QueueElem]):
+        print("Adding to the queue: {} QueueElems".format(len(atomic_list)))
         self._queue.add_list(atomic_list)
-        pass
 
     def check_queue(self):
         pass
