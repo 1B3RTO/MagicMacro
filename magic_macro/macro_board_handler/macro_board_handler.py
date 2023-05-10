@@ -19,6 +19,7 @@ class MacroBoardHandler:
 
         self._active_acw_action = None
         self._active_cw_action = None
+        self._active_rotary_action = None
 
         # Load all the macro boards
         self._macro_boards: list[MacroBoard] = load_macros_from_folder()
@@ -26,6 +27,7 @@ class MacroBoardHandler:
 
         # Listener: Set menu switch on short press of rotary encoder
         context.subscribe_single(Topics.BUTTON_PRESS, self.__on_button_press)
+        context.subscribe_single(Topics.OVERRIDE_ROTARY, self.__on_override_rotary_actions)
 
         # Set menu view
         self.__switch_view()
@@ -59,9 +61,11 @@ class MacroBoardHandler:
             # Actions of the rotary encoder rotation
             #  - append their methods to the action_method
             if caller_id == 13:
-                pass
+                if self._active_acw_action is not None:
+                    action_methods.append(self._active_acw_action)
             elif caller_id == 14:
-                pass
+                if self._active_cw_action is not None:
+                    action_methods.append(self._active_cw_action)
 
             # Every other button
             else:
@@ -71,16 +75,20 @@ class MacroBoardHandler:
 
                 # For each action button append their methods to the action_methods list
                 for button in buttons_to_queue:
-                    action_methods.append(button.method)
+                    print(button.combination)
+                    action_methods.append(button.combination)
 
             # For all the requested methods to exec
-            for method in action_methods:
+            for combination in action_methods:
                 try:
-                    action_list = method()
-                    assert isinstance(action_list, ActionList)
-                    atomic_list: list[QueueElem] = action_list.get_atomic_list(caller_id, timestamp)
+                    assert isinstance(combination, list)
+
+                    method: ActionList = ActionList()
+                    method.import_actions(combination)
+                    atomic_list: list[QueueElem] = method.get_atomic_list(caller_id, timestamp)
                     elems_to_queue.append(atomic_list)
                 except Exception as e:
+                    print(e)
                     print("unable to run the action: button {} - trigger type {}".format(caller_id, trigger_type))
 
             # TODO: Apply some restrictions on the elems to queue
@@ -89,17 +97,43 @@ class MacroBoardHandler:
             for atomic_list in elems_to_queue:
                 context.emit(Topics.ADD_TO_QUEUE, atomic_list)
 
+    def __on_override_rotary_actions(self, action_id, acw_method, cw_method):
+        if self._active_rotary_action is not None:
+            self._macropad.pixels[self._active_rotary_action] = \
+                self._macro_boards[self._selected_board].get_colors()[self._active_rotary_action]
+
+        if action_id == self._active_rotary_action:
+            self._active_acw_action = None
+            self._active_cw_action = None
+            self._active_rotary_action = None
+        else:
+            self._active_acw_action = acw_method
+            self._active_cw_action = cw_method
+            self._active_rotary_action = action_id
+            self._macropad.pixels[self._active_rotary_action] = 0xFFFFFF
+
     def __switch_view(self):
         self._is_selector_view = not self._is_selector_view
         if self._is_selector_view:
             # Set selector view
             self._display_handler.menu_selector(self._selected_board, self._titles)
+
+            for i in range(12):
+                self._macropad.pixels[i] = 0x000000
         else:
             # Setup board view
+            self._active_acw_action = None
+            self._active_cw_action = None
+            self._active_rotary_action = None
+
             self._selected_board %= len(self._titles)
             selected_board = self._macro_boards[self._selected_board]
             print(selected_board.get_names())
+
             self._display_handler.set_inside_macro_view(**selected_board.get_names())
+
+            for i, color in enumerate(selected_board.get_colors()):
+                self._macropad.pixels[i] = color
 
     def __acw_rotation(self):
         # Short press button 13
