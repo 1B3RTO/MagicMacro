@@ -4,8 +4,13 @@ class QueueElem:
 
     def __copy__(self):
         obj = type(self).__new__(self.__class__)
-        obj.__dict__.update(self.__dict__)
+        for key, value in self.__dict__.items():
+            setattr(obj, key, value)
         return obj
+
+    def __new__(cls):
+        instance = super().__new__(cls)
+        return instance
 
 
 class WriteStringAction(QueueElem):
