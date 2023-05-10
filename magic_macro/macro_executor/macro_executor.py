@@ -39,12 +39,12 @@ class MacroExecutor:
             if atomic_action.tone > 0:
                 macropad.start_tone(atomic_action.tone)
 
-        elif isinstance(atomic_action, DisplayBrightness):
-            new_brightness = atomic_action.brightness
-            macropad.pixels.brightness = max(min(new_brightness, 1.0), 0.0)
-
         elif isinstance(atomic_action, DisplayBrightnessIncrement):
             new_brightness = atomic_action.brightness + macropad.display.brightness
+            macropad.display.brightness = max(min(new_brightness, 1.0), 0.0)
+
+        elif isinstance(atomic_action, DisplayBrightness):
+            new_brightness = atomic_action.brightness
             macropad.pixels.brightness = max(min(new_brightness, 1.0), 0.0)
 
         elif isinstance(atomic_action, KeyboardBrightnessIncrement):
