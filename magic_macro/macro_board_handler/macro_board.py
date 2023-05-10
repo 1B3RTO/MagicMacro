@@ -32,7 +32,7 @@ class MacroBoard:
             try:
                 btn = self._buttons.get(i)
                 labels.append(btn.label)
-            except KeyError:
+            except Exception:
                 labels.append("-")
 
         return {"title": self.title, "labels": labels}
@@ -43,7 +43,7 @@ class MacroBoard:
             try:
                 btn = self._buttons.get(i)
                 colors.append(btn.color)
-            except KeyError:
-                colors.append(0x0f0f0f)
+            except Exception:
+                colors.append(0x000000)
 
         return colors
