@@ -27,7 +27,7 @@ class MagicMacroPad(object):
         self.__build_macropad()
         self._keyboard_handler = KeyboardHandler()
         self._macro_board_handler = MacroBoardHandler(self._macropad)
-        self._action_queue = ActionQueue()
+        self._action_queue = ActionQueue(self._macropad)
 
     def __build_macropad(self):
         if KEYBOARD_LAYOUT is None or KEYCODE is None:
@@ -39,7 +39,7 @@ class MagicMacroPad(object):
             )
 
         macropad.display.auto_refresh = False
-        macropad.pixels.auto_write = False
+        macropad.pixels.auto_write = True
 
         self._macropad = macropad
 

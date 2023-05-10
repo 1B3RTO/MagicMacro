@@ -2,11 +2,13 @@ from magic_macro.utils.context import context
 from magic_macro.utils.enums import Topics
 from magic_macro.action_queue.queue import Queue
 from magic_macro.action_queue.queue_elem import QueueElem
+from magic_macro.macro_executor.macro_executor import MacroExecutor
 
 
 class ActionQueue:
-    def __init__(self):
+    def __init__(self, macropad):
         self._queue = Queue()
+        self._macropad = macropad
 
         context.subscribe_single(Topics.ADD_TO_QUEUE, self.__on_add_to_queue)
 
@@ -18,4 +20,7 @@ class ActionQueue:
         elems_to_exec = self._queue.get_until(timestamp)
         if len(elems_to_exec) > 0:
             print("Elems to exec", len(elems_to_exec))
-        # TODO: exec the queue elements
+            for elem in elems_to_exec:
+                print(elem)
+                MacroExecutor.exec(self._macropad, elem)
+
