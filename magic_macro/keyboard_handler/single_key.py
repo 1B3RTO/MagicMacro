@@ -40,7 +40,7 @@ class SingleKey:
 
     def check_status(self, timestamp):
         delta = timestamp - self._timestamp
-        if self._status and delta >= _LONG_DELAY:
+        if self._status and delta >= _LONG_DELAY and not self._is_long_press:
             self._is_long_press = True
             self._timestamp = timestamp - _HALF_DELAY
             self.__on_long_press(timestamp)
