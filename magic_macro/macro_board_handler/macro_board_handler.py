@@ -4,10 +4,11 @@ from magic_macro.utils.context import context
 from magic_macro.utils.macro_loader import load_macros_from_folder
 from magic_macro.macro_board_handler.macro_board import MacroBoard
 from magic_macro.display_handler.display_handler import DisplayHandler
-from magic_macro.utils.enums import TriggerType, Topics
+from magic_macro.utils.enums import TriggerType, Topics, RepetitionType
 
 from magic_macro.action_queue.action_list import ActionList
 from magic_macro.action_queue.queue_elem import QueueElem
+import time
 
 
 class MacroBoardHandler:
@@ -21,6 +22,10 @@ class MacroBoardHandler:
         self._active_cw_action = None
         self._active_rotary_action = None
 
+        self._running_queue = dict()
+
+        self._board_colors = None
+
         # Load all the macro boards
         self._macro_boards: list[MacroBoard] = load_macros_from_folder()
         self._titles: list[str] = self.__get_board_titles()
@@ -28,6 +33,7 @@ class MacroBoardHandler:
         # Listener: Set menu switch on short press of rotary encoder
         context.subscribe_single(Topics.BUTTON_PRESS, self.__on_button_press)
         context.subscribe_single(Topics.OVERRIDE_ROTARY, self.__on_override_rotary_actions)
+        context.subscribe_single(Topics.MACRO_END, self.__on_macro_end)
 
         # Set menu view
         self.__switch_view()
@@ -39,10 +45,17 @@ class MacroBoardHandler:
         return titles
 
     def __on_button_press(self, caller_id, trigger_type, timestamp):
+        caller_and_trigger = f"{caller_id}:{trigger_type}"
+
         # Check for a short press on the rotary encoder
         if caller_id == 12 and trigger_type is TriggerType.ON_SHORT_PRESS:
             # switch view
+            for key in self._running_queue.keys():
+                self._running_queue.update({key: RepetitionType.ONE_TIME})
             self.__switch_view()
+
+        if trigger_type is TriggerType.NO_PRESS:
+            self.__on_button_release(caller_id, timestamp)
 
         # Manage the board selector view
         elif self._is_selector_view:
@@ -53,63 +66,112 @@ class MacroBoardHandler:
 
         # Manage the board macros
         else:
-            selected_board = self._macro_boards[self._selected_board]
+            # Check if the macro is already running
+            if trigger_type is TriggerType.ON_INITIAL_PRESS:
+                for caller_and_trigger, repetition_type in self._running_queue.items():
+                    if caller_and_trigger.startswith(str(caller_id)) and repetition_type is RepetitionType.UNTIL_NEXT_PRESS:
+                        self._running_queue.update({caller_and_trigger: RepetitionType.ONE_TIME})
+                        return
 
-            elems_to_queue: list[list[QueueElem]] = []
-            action_methods = []
+            if self._running_queue.get(caller_and_trigger) is None:
+                self.__run_button(caller_id, trigger_type, timestamp)
+                return
 
-            # Actions of the rotary encoder rotation
-            #  - append their methods to the action_method
-            if caller_id == 13:
-                if self._active_acw_action is not None:
-                    action_methods.append(self._active_acw_action)
-            elif caller_id == 14:
-                if self._active_cw_action is not None:
-                    action_methods.append(self._active_cw_action)
+    def __run_button(self, caller_id, trigger_type, timestamp):
+        caller_and_trigger = f"{caller_id}:{trigger_type}"
 
-            # Every other button
-            else:
-                # get the action buttons from the selected combination of button - trigger_type
-                print("caller_id", caller_id, "trigger_type", trigger_type)
-                buttons_to_queue = selected_board.get_actions(caller_id, trigger_type)
+        # If the macro is already running
+        if caller_and_trigger in self._running_queue:
+            return
 
-                # For each action button append their methods to the action_methods list
-                for button in buttons_to_queue:
-                    print(button.combination)
-                    action_methods.append(button.combination)
+        selected_board = self._macro_boards[self._selected_board]
 
-            # For all the requested methods to exec
-            for combination in action_methods:
-                try:
-                    assert isinstance(combination, list)
+        elems_to_queue: list[list[QueueElem]] = []
+        combination = None
+        repetition_type = None
+        is_rotary_action = False
 
-                    method: ActionList = ActionList()
-                    method.import_actions(combination)
-                    atomic_list: list[QueueElem] = method.get_atomic_list(caller_id, timestamp)
-                    elems_to_queue.append(atomic_list)
-                except Exception as e:
-                    print(e)
-                    print("unable to run the action: button {} - trigger type {}".format(caller_id, trigger_type))
+        # Actions of the rotary encoder rotation
+        #  - append their methods to the action_method
+        if caller_id == 13 and self._active_acw_action is not None:
+            combination = self._active_acw_action
+            repetition_type = RepetitionType.ONE_TIME
+            is_rotary_action = True
+        elif caller_id == 14 and self._active_cw_action is not None:
+            combination = self._active_cw_action
+            repetition_type = RepetitionType.ONE_TIME
+            is_rotary_action = True
 
-            # TODO: Apply some restrictions on the elems to queue
-            #  - cannot override the rotary from a rotary action
+        # Every other button
+        else:
+            # get the action buttons from the selected combination of button - trigger_type
+            print("caller_id", caller_id, "trigger_type", trigger_type)
 
-            for atomic_list in elems_to_queue:
-                context.emit(Topics.ADD_TO_QUEUE, atomic_list)
+            # It returns at most one item in a list
+            buttons_to_queue = selected_board.get_actions(caller_id, trigger_type)
+
+            # For each action button append their methods to the combination list
+            if len(buttons_to_queue) == 1:
+                button = buttons_to_queue[0]
+
+                combination = button.combination
+                repetition_type = button.repetition_type
+
+        # There is nothing to exec
+        if combination is None:
+            return
+
+        try:
+            assert isinstance(combination, list)
+
+            method: ActionList = ActionList()
+            method.import_actions(combination, is_rotary_action)
+            atomic_list: list[QueueElem] = method.get_atomic_list(caller_and_trigger, timestamp)
+            elems_to_queue.append(atomic_list)
+
+            # Add to the running queue
+            self._running_queue.update({caller_and_trigger: repetition_type})
+        except Exception as e:
+            print(e)
+            print("unable to run the action: {}".format(caller_and_trigger))
+
+        for atomic_list in elems_to_queue:
+            context.emit(Topics.ADD_TO_QUEUE, atomic_list)
+
+    def __on_macro_end(self, caller_and_trigger):
+        # Remove running
+        repetition_type = self._running_queue.pop(caller_and_trigger)
+
+        # Check repetition type
+        if repetition_type is not RepetitionType.ONE_TIME:
+            timestamp = time.monotonic_ns()
+            caller_id, trigger_type = map(int, caller_and_trigger.split(":"))
+            self.__run_button(caller_id, trigger_type, timestamp)
+
+    def __on_button_release(self, caller_id, timestamp):
+        # Check if the macro was on KEEP_PRESSED:
+        #   if it was -> set it to not be rerun on its end
+
+        for caller_and_trigger, repetition_type in self._running_queue.items():
+            if caller_and_trigger.startswith(str(caller_id)) and repetition_type is RepetitionType.KEEP_PRESSED:
+                self._running_queue.update({caller_and_trigger: RepetitionType.ONE_TIME})
+                break
 
     def __on_override_rotary_actions(self, action_id, acw_method, cw_method):
+        caller_id, trigger_type = map(int, action_id.split(":"))
+
         if self._active_rotary_action is not None:
             self._macropad.pixels[self._active_rotary_action] = \
                 self._macro_boards[self._selected_board].get_colors()[self._active_rotary_action]
 
-        if action_id == self._active_rotary_action:
+        if caller_id == self._active_rotary_action:
             self._active_acw_action = None
             self._active_cw_action = None
             self._active_rotary_action = None
         else:
             self._active_acw_action = acw_method
             self._active_cw_action = cw_method
-            self._active_rotary_action = action_id
+            self._active_rotary_action = caller_id
             self._macropad.pixels[self._active_rotary_action] = 0xFFFFFF
 
     def __switch_view(self):

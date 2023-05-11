@@ -19,6 +19,7 @@ class AtomicActionType:
 class RepetitionType:
     ONE_TIME = 0
     KEEP_PRESSED = 1
+    UNTIL_NEXT_PRESS = 2
 
 
 class TriggerType:
