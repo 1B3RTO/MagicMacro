@@ -96,7 +96,7 @@ class ActionList:
     
     """
 
-    def import_actions(self, list_of_actions: list):
+    def import_actions(self, list_of_actions: list, is_rotary_action: bool = False):
         for action in list_of_actions:
             action_type = action.get("action_type")
             value = action.get("value")
@@ -115,7 +115,7 @@ class ActionList:
                 self.mouse_movement(value.get("x"), value.get("y"), value.get("wheel"))
             elif action_type == AtomicActionType.TONE:
                 self.play_and_stop_tone(tone=value.get("tone"), duration_ms=value.get("duration_ms"))
-            elif action_type == AtomicActionType.OVERRIDE_ROTARY:
+            elif action_type == AtomicActionType.OVERRIDE_ROTARY and not is_rotary_action:
                 action_cw = value.get("cw")
                 action_acw = value.get("acw")
                 self.override_rotary_encoder(action_cw, action_acw)
