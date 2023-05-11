@@ -3,14 +3,14 @@ from adafruit_hid.consumer_control_code import ConsumerControlCode
 
 action_vol_up = [
     {
-        "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+        "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
         "value": ConsumerControlCode.VOLUME_INCREMENT
     }
 ]
 
 action_vol_down = [
     {
-        "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+        "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
         "value": ConsumerControlCode.VOLUME_DECREMENT
     }
 ]
@@ -27,14 +27,14 @@ action_override_rotary_volume = [
 
 action_fast_forward = [
     {
-        "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+        "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
         "value": ConsumerControlCode.FAST_FORWARD
     }
 ]
 
 action_rewind = [
     {
-        "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+        "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
         "value": ConsumerControlCode.REWIND
     }
 ]
@@ -62,7 +62,7 @@ board = {
                     "trigger_type": TriggerType.ON_SHORT_PRESS,
                     "combination": [
                         {
-                            "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                            "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                             "value": ConsumerControlCode.PLAY_PAUSE
                         }
                     ]
@@ -80,7 +80,7 @@ board = {
                     "trigger_type": TriggerType.ON_SHORT_PRESS,
                     "combination": [
                         {
-                            "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                            "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                             "value": ConsumerControlCode.SCAN_PREVIOUS_TRACK
                         }
                     ]
@@ -97,7 +97,7 @@ board = {
                     "trigger_type": TriggerType.ON_SHORT_PRESS,
                     "combination": [
                         {
-                            "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                            "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                             "value": ConsumerControlCode.SCAN_NEXT_TRACK
                         }
                     ]
@@ -114,7 +114,7 @@ board = {
                     "trigger_type": TriggerType.ON_SHORT_PRESS,
                     "combination": [
                         {
-                            "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                            "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                             "value": ConsumerControlCode.STOP
                         }
                     ]
@@ -131,7 +131,7 @@ board = {
                     "trigger_type": TriggerType.ON_SHORT_PRESS,
                     "combination": [
                         {
-                            "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                            "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                             "value": ConsumerControlCode.REWIND
                         }
                     ]
@@ -148,7 +148,7 @@ board = {
                     "trigger_type": TriggerType.ON_SHORT_PRESS,
                     "combination": [
                         {
-                            "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                            "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                             "value": ConsumerControlCode.FAST_FORWARD
                         }
                     ]
@@ -177,7 +177,7 @@ board = {
                     "trigger_type": TriggerType.ON_SHORT_PRESS,
                     "combination": [
                         {
-                            "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                            "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                             "value": ConsumerControlCode.MUTE
                         }
                     ]

@@ -70,7 +70,7 @@ board = {
         },
         {
             "button": 3,
-            "label": "TEST",
+            "label": "A",
             "color": 0x0099FF,
             "actions": [
                 {

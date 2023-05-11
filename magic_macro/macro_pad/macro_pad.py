@@ -41,6 +41,9 @@ class MagicMacroPad(object):
         macropad.display.auto_refresh = False
         macropad.pixels.auto_write = True
 
+        macropad.pixels.brightness = 0.2
+        macropad.display.brightness = 0.3
+
         self._macropad = macropad
 
     def main_loop(self):

@@ -4,21 +4,21 @@ from adafruit_hid.mouse import Mouse
 
 action_left_btn = [
     {
-        "action_type": AtomicActionType.MOUSE_BUTTON,
+        "action_type": AtomicActionType.PRESS_AND_RELEASE_MOUSE_BUTTON,
         "value": Mouse.LEFT_BUTTON
     }
 ]
 
 action_right_btn = [
     {
-        "action_type": AtomicActionType.MOUSE_BUTTON,
+        "action_type": AtomicActionType.PRESS_AND_RELEASE_MOUSE_BUTTON,
         "value": Mouse.RIGHT_BUTTON
     }
 ]
 
 action_middle_btn = [
     {
-        "action_type": AtomicActionType.MOUSE_BUTTON,
+        "action_type": AtomicActionType.PRESS_AND_RELEASE_MOUSE_BUTTON,
         "value": Mouse.MIDDLE_BUTTON
     }
 ]
@@ -97,6 +97,87 @@ board = {
                     "repetition_type": RepetitionType.ONE_TIME,
                     "trigger_type": TriggerType.ON_SHORT_PRESS,
                     "combination": action_right_btn
+                }
+            ],
+        },
+        {
+            "button": 9,
+            "label": "CTRL",
+            "color": 0x0099FF,
+            "actions": [
+                {
+                    "repetition_type": RepetitionType.ONE_TIME,
+                    "trigger_type": TriggerType.ON_INITIAL_PRESS,
+                    "combination": [
+                        {
+                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "value": Keycode.CONTROL
+                        }
+                    ]
+                },
+                {
+                    "repetition_type": RepetitionType.ONE_TIME,
+                    "trigger_type": TriggerType.NO_PRESS,
+                    "combination": [
+                        {
+                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "value": - Keycode.CONTROL
+                        }
+                    ]
+                },
+            ],
+        },
+        {
+            "button": 10,
+            "label": "ESC",
+            "color": 0x0099FF,
+            "actions": [
+                {
+                    "repetition_type": RepetitionType.ONE_TIME,
+                    "trigger_type": TriggerType.ON_INITIAL_PRESS,
+                    "combination": [
+                        {
+                            "action_type": AtomicActionType.PRESS_AND_RELEASE_KEYCODE,
+                            "value": Keycode.ESCAPE
+                        }
+                    ]
+                }
+            ],
+        },
+        {
+            "button": 11,
+            "label": "SCREEN",
+            "color": 0x0099FF,
+            "actions": [
+                {
+                    "repetition_type": RepetitionType.ONE_TIME,
+                    "trigger_type": TriggerType.ON_INITIAL_PRESS,
+                    "combination": [
+                        {
+                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "value": Keycode.WINDOWS
+                        },
+                        {
+                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "value": Keycode.SHIFT
+                        },
+                        {
+                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "value": Keycode.S
+                        },
+                        {
+                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "value": -Keycode.WINDOWS
+                        },
+                        {
+                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "value": -Keycode.SHIFT
+                        },
+                        {
+                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "value": -Keycode.S
+                        }
+                    ]
                 }
             ],
         }

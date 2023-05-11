@@ -45,7 +45,7 @@ class MacroExecutor:
 
         elif isinstance(atomic_action, DisplayBrightness):
             new_brightness = atomic_action.brightness
-            macropad.pixels.brightness = max(min(new_brightness, 1.0), 0.0)
+            macropad.display.brightness = max(min(new_brightness, 1.0), 0.0)
 
         elif isinstance(atomic_action, KeyboardBrightnessIncrement):
             new_brightness = atomic_action.brightness + macropad.pixels.brightness
