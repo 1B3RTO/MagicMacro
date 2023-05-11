@@ -104,12 +104,18 @@ class ActionList:
             if action_type == AtomicActionType.WRITE_STRING:
                 self.write_string(value)
             elif action_type == AtomicActionType.WRITE_KEYCODE:
+                self.keycode_press(value)
+            elif action_type == AtomicActionType.PRESS_AND_RELEASE_KEYCODE:
                 self.keycode_press_and_release(value)
             elif action_type == AtomicActionType.DELAY:
                 self.wait(value)
             elif action_type == AtomicActionType.CONSUMER_CONTROL_CODE:
+                self.consumer_control_code_press(value)
+            elif action_type == AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE:
                 self.consumer_control_code_press_and_release(value)
             elif action_type == AtomicActionType.MOUSE_BUTTON:
+                self.mouse_button_press(value)
+            elif action_type == AtomicActionType.PRESS_AND_RELEASE_MOUSE_BUTTON:
                 self.mouse_button_press_and_release(value)
             elif action_type == AtomicActionType.MOUSE_MOVEMENT:
                 self.mouse_movement(value.get("x"), value.get("y"), value.get("wheel"))

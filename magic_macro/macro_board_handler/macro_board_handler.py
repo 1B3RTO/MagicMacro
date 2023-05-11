@@ -55,9 +55,6 @@ class MacroBoardHandler:
                 self._running_queue.update({key: RepetitionType.ONE_TIME})
             self.__switch_view()
 
-        if trigger_type is TriggerType.NO_PRESS:
-            self.__on_button_release(caller_id, timestamp)
-
         # Manage the board selector view
         elif self._is_selector_view:
             if caller_id == 13:
@@ -67,6 +64,10 @@ class MacroBoardHandler:
 
         # Manage the board macros
         else:
+            # Check for actions to stop repeating
+            if trigger_type is TriggerType.NO_PRESS:
+                self.__on_button_release(caller_id, timestamp)
+
             # Check if the macro is already running
             if trigger_type is TriggerType.ON_INITIAL_PRESS:
                 for caller_and_trigger, repetition_type in self._running_queue.items():
@@ -77,7 +78,6 @@ class MacroBoardHandler:
 
             if self._running_queue.get(caller_and_trigger) is None:
                 self.__run_button(caller_id, trigger_type, timestamp)
-                return
 
     def __run_button(self, caller_id, trigger_type, timestamp):
         caller_and_trigger = f"{caller_id}:{trigger_type}"
@@ -153,7 +153,6 @@ class MacroBoardHandler:
     def __on_button_release(self, caller_id, timestamp):
         # Check if the macro was on KEEP_PRESSED:
         #   if it was -> set it to not be rerun on its end
-
         for caller_and_trigger, repetition_type in self._running_queue.items():
             if caller_and_trigger.startswith(str(caller_id)) and repetition_type is RepetitionType.KEEP_PRESSED:
                 self._running_queue.update({caller_and_trigger: RepetitionType.ONE_TIME})
