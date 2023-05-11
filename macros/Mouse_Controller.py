@@ -56,7 +56,7 @@ action_override_rotary_wheel = [
 ]
 
 board = {
-    "title": "MUSIC CONTROLS",
+    "title": "MOUSE",
     "macros": [
         {
             "button": 0,
