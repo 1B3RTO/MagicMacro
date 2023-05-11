@@ -18,10 +18,10 @@ class MacroBoard:
     def get_actions(self, button: int, trigger_type: int) -> list[ButtonAction]:
         try:
             btn = self._buttons[button]
-            actions: list[ButtonAction] = btn.actions[trigger_type]
+            action: ButtonAction = btn.actions[trigger_type]
 
-            print("There are {} actions for button {} and trigger_type {}".format(len(actions), button, trigger_type))
-            return actions
+            print("There is an action for button {} and trigger_type {}".format(button, trigger_type))
+            return [action]
         except KeyError:
             print("There are no actions for button {} and trigger_type {}".format(button, trigger_type))
             return []

@@ -15,6 +15,6 @@ class Button:
 
         for action in actions:
             trigger_type = action["trigger_type"]
-            if self.actions.get(trigger_type) is None:
-                self.actions.update({trigger_type: list()})
-            self.actions.get(trigger_type).append(ButtonAction(**action))
+            if self.actions.get(trigger_type) is not None:
+                continue
+            self.actions.update({trigger_type: ButtonAction(**action)})
