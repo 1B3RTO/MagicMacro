@@ -25,6 +25,7 @@ class MacroBoardHandler:
         self._running_queue = dict()
 
         self._board_colors = None
+        self._last_colors = None
 
         # Load all the macro boards
         self._macro_boards: list[MacroBoard] = load_macros_from_folder()
@@ -69,7 +70,8 @@ class MacroBoardHandler:
             # Check if the macro is already running
             if trigger_type is TriggerType.ON_INITIAL_PRESS:
                 for caller_and_trigger, repetition_type in self._running_queue.items():
-                    if caller_and_trigger.startswith(str(caller_id)) and repetition_type is RepetitionType.UNTIL_NEXT_PRESS:
+                    if caller_and_trigger.startswith(str(caller_id)) and \
+                            repetition_type is RepetitionType.UNTIL_NEXT_PRESS:
                         self._running_queue.update({caller_and_trigger: RepetitionType.ONE_TIME})
                         return
 
@@ -160,10 +162,6 @@ class MacroBoardHandler:
     def __on_override_rotary_actions(self, action_id, acw_method, cw_method):
         caller_id, trigger_type = map(int, action_id.split(":"))
 
-        if self._active_rotary_action is not None:
-            self._macropad.pixels[self._active_rotary_action] = \
-                self._macro_boards[self._selected_board].get_colors()[self._active_rotary_action]
-
         if caller_id == self._active_rotary_action:
             self._active_acw_action = None
             self._active_cw_action = None
@@ -172,16 +170,48 @@ class MacroBoardHandler:
             self._active_acw_action = acw_method
             self._active_cw_action = cw_method
             self._active_rotary_action = caller_id
-            self._macropad.pixels[self._active_rotary_action] = 0xFFFFFF
+
+    def update_button_colors(self):
+        colors = [0x000000 for i in range(12)]
+
+        if self._board_colors is not None:
+            # Apply base color
+            for i in range(12):
+                colors[i] = self._board_colors[i]
+
+            # Apply selected rotary encoder color
+            if self._active_rotary_action is not None:
+                colors[self._active_rotary_action] = 0xFFFFFF
+
+            # Apply active action color
+            for caller_and_trigger, repetition_type in self._running_queue.items():
+                caller_id, _ = map(int, caller_and_trigger.split(":"))
+                if caller_id < 12:
+                    color = 0x000000
+
+                    if repetition_type is RepetitionType.ONE_TIME:
+                        color = 0xFFBA13
+                    elif repetition_type is RepetitionType.KEEP_PRESSED:
+                        color = 0x13ffba
+                    elif repetition_type is RepetitionType.UNTIL_NEXT_PRESS:
+                        color = 0xba13ff
+
+                    colors[caller_id] = color
+
+        for i, color in enumerate(colors):
+            if self._last_colors is None:
+                self._macropad.pixels[i] = color
+            elif self._last_colors[i] != color:
+                self._macropad.pixels[i] = color
+
+        self._last_colors = colors
 
     def __switch_view(self):
         self._is_selector_view = not self._is_selector_view
         if self._is_selector_view:
             # Set selector view
             self._display_handler.menu_selector(self._selected_board, self._titles)
-
-            for i in range(12):
-                self._macropad.pixels[i] = 0x000000
+            self._board_colors = None
         else:
             # Setup board view
             self._active_acw_action = None
@@ -193,9 +223,7 @@ class MacroBoardHandler:
             print(selected_board.get_names())
 
             self._display_handler.set_inside_macro_view(**selected_board.get_names())
-
-            for i, color in enumerate(selected_board.get_colors()):
-                self._macropad.pixels[i] = color
+            self._board_colors = selected_board.get_colors()
 
     def __acw_rotation(self):
         # Short press button 13

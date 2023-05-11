@@ -52,3 +52,6 @@ class MagicMacroPad(object):
 
             # Action queue update
             self._action_queue.check_queue(timestamp)
+
+            # Update Board Color
+            self._macro_board_handler.update_button_colors()
