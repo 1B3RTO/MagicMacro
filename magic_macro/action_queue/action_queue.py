@@ -21,6 +21,5 @@ class ActionQueue:
         if len(elems_to_exec) > 0:
             print("Elems to exec", len(elems_to_exec))
             for elem in elems_to_exec:
-                print(elem)
                 MacroExecutor.exec(self._macropad, elem)
 

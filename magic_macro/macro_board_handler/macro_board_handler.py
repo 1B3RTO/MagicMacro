@@ -70,10 +70,9 @@ class MacroBoardHandler:
 
             # Check if the macro is already running
             if trigger_type is TriggerType.ON_INITIAL_PRESS:
-                for caller_and_trigger, repetition_type in self._running_queue.items():
-                    if caller_and_trigger.startswith(str(caller_id)) and \
-                            repetition_type is RepetitionType.UNTIL_NEXT_PRESS:
-                        self._running_queue.update({caller_and_trigger: RepetitionType.ONE_TIME})
+                for key, item in self._running_queue.items():
+                    if int(key.split(":")[0]) == caller_id and item is RepetitionType.UNTIL_NEXT_PRESS:
+                        self._running_queue.update({key: RepetitionType.ONE_TIME})
                         return
 
             if self._running_queue.get(caller_and_trigger) is None:
@@ -219,7 +218,6 @@ class MacroBoardHandler:
 
             self._selected_board %= len(self._titles)
             selected_board = self._macro_boards[self._selected_board]
-            print(selected_board.get_names())
 
             self._display_handler.set_inside_macro_view(**selected_board.get_names())
             self._board_colors = selected_board.get_colors()

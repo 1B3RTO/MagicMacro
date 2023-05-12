@@ -11,8 +11,7 @@ import time
 
 import time
 
-RUN_TEST = True
-RUN_MAIN = False
+RUN_TEST = False
 
 
 def test_run():
@@ -31,11 +30,14 @@ def test_run():
 def main_run():
     # Do production stuff
 
-    while True:
-        time.sleep(1.0)
+    from magic_macro.macro_pad.macro_pad import MagicMacroPad
+
+    controller = MagicMacroPad()
+
+    controller.main_loop()
 
 
 if RUN_TEST:
     test_run()
-elif RUN_MAIN:
+else:
     main_run()

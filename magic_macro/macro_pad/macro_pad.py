@@ -6,6 +6,8 @@ from magic_macro.keyboard_handler.keyboard_handler import KeyboardHandler
 from magic_macro.macro_board_handler.macro_board_handler import MacroBoardHandler
 from magic_macro.action_queue.action_queue import ActionQueue
 
+import magic_macro.config as config
+
 
 class MagicMacroPad(object):
     _instance = None
@@ -41,8 +43,8 @@ class MagicMacroPad(object):
         macropad.display.auto_refresh = False
         macropad.pixels.auto_write = True
 
-        macropad.pixels.brightness = 0.2
-        macropad.display.brightness = 0.3
+        macropad.pixels.brightness = config.DEFAULT_KEYBOARD_BRIGHTNESS
+        macropad.display.brightness = config.DEFAULT_DISPLAY_BRIGHTNESS
 
         self._macropad = macropad
 

@@ -110,7 +110,7 @@ board = {
                     "trigger_type": TriggerType.ON_INITIAL_PRESS,
                     "combination": [
                         {
-                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "action_type": AtomicActionType.KEYCODE,
                             "value": Keycode.CONTROL
                         }
                     ]
@@ -120,7 +120,7 @@ board = {
                     "trigger_type": TriggerType.NO_PRESS,
                     "combination": [
                         {
-                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "action_type": AtomicActionType.KEYCODE,
                             "value": - Keycode.CONTROL
                         }
                     ]
@@ -154,27 +154,27 @@ board = {
                     "trigger_type": TriggerType.ON_INITIAL_PRESS,
                     "combination": [
                         {
-                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "action_type": AtomicActionType.KEYCODE,
                             "value": Keycode.WINDOWS
                         },
                         {
-                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "action_type": AtomicActionType.KEYCODE,
                             "value": Keycode.SHIFT
                         },
                         {
-                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "action_type": AtomicActionType.KEYCODE,
                             "value": Keycode.S
                         },
                         {
-                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "action_type": AtomicActionType.KEYCODE,
                             "value": -Keycode.WINDOWS
                         },
                         {
-                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "action_type": AtomicActionType.KEYCODE,
                             "value": -Keycode.SHIFT
                         },
                         {
-                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "action_type": AtomicActionType.KEYCODE,
                             "value": -Keycode.S
                         }
                     ]
