@@ -3,35 +3,35 @@ from adafruit_hid.keycode import Keycode
 
 action_tone = [
     {
-        "action_type": AtomicActionType.TONE,
+        "action_type": AtomicActionType.PLAY_AND_STOP_TONE,
         "value": {
             "tone": 100,
             "duration_ms": 500
         }
     },
     {
-        "action_type": AtomicActionType.TONE,
+        "action_type": AtomicActionType.PLAY_AND_STOP_TONE,
         "value": {
             "tone": 200,
             "duration_ms": 500
         }
     },
     {
-        "action_type": AtomicActionType.TONE,
+        "action_type": AtomicActionType.PLAY_AND_STOP_TONE,
         "value": {
             "tone": 300,
             "duration_ms": 500
         }
     },
     {
-        "action_type": AtomicActionType.TONE,
+        "action_type": AtomicActionType.PLAY_AND_STOP_TONE,
         "value": {
             "tone": 200,
             "duration_ms": 500
         }
     },
     {
-        "action_type": AtomicActionType.TONE,
+        "action_type": AtomicActionType.PLAY_AND_STOP_TONE,
         "value": {
             "tone": 100,
             "duration_ms": 500
@@ -77,7 +77,7 @@ board = {
                     "repetition_type": RepetitionType.ONE_TIME,
                     "trigger_type": TriggerType.ON_INITIAL_PRESS,
                     "combination": [{
-                        "action_type": AtomicActionType.WRITE_KEYCODE,
+                        "action_type": AtomicActionType.KEYCODE,
                         "value": Keycode.A
                     }]
                 },
@@ -85,7 +85,7 @@ board = {
                     "repetition_type": RepetitionType.ONE_TIME,
                     "trigger_type": TriggerType.NO_PRESS,
                     "combination": [{
-                        "action_type": AtomicActionType.WRITE_KEYCODE,
+                        "action_type": AtomicActionType.KEYCODE,
                         "value": -Keycode.A
                     }]
                 }
@@ -102,19 +102,19 @@ board = {
                     "trigger_type": TriggerType.ON_INITIAL_PRESS,
                     "combination": [
                         {
-                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "action_type": AtomicActionType.KEYCODE,
                             "value": Keycode.WINDOWS
                         },
                         {
-                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "action_type": AtomicActionType.KEYCODE,
                             "value": Keycode.TAB
                         },
                         {
-                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "action_type": AtomicActionType.KEYCODE,
                             "value": - Keycode.WINDOWS
                         },
                         {
-                            "action_type": AtomicActionType.WRITE_KEYCODE,
+                            "action_type": AtomicActionType.KEYCODE,
                             "value": - Keycode.TAB
                         }
                     ]

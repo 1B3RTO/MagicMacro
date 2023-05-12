@@ -10,6 +10,7 @@ class ActionList:
     _actions: list[QueueElem] = None
     _offset: int = None
     _delay: int = None
+    _parsers: dict = None
 
     def get_actions(self):
         return self._actions
@@ -18,16 +19,43 @@ class ActionList:
         self._delay = delay_ms
         self._actions = []
         self._offset = 0
+        self._is_rotary_action = False
+
+        self._parsers = {
+            AtomicActionType.WRITE_STRING: self.write_string,
+            AtomicActionType.KEYCODE: self.keycode_press,
+            AtomicActionType.DELAY: self.wait,
+            AtomicActionType.CONSUMER_CONTROL_CODE: self.consumer_control_code_press,
+            AtomicActionType.MOUSE_BUTTON: self.mouse_button_press,
+            AtomicActionType.MOUSE_MOVEMENT: self.mouse_movement,
+            AtomicActionType.TONE: self.play_tone,
+            AtomicActionType.OVERRIDE_ROTARY: self.override_rotary_encoder,
+            AtomicActionType.INCREMENT_DISPLAY_BRIGHTNESS: self.increase_display_brightness,
+            AtomicActionType.INCREMENT_KEYBOARD_BRIGHTNESS: self.increase_keyboard_brightness,
+            AtomicActionType.OVERRIDE_DEFAULT_DELAY: self.override_default_delay,
+            AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE: self.consumer_control_code_press_and_release,
+            AtomicActionType.PRESS_AND_RELEASE_KEYCODE: self.keycode_press_and_release,
+            AtomicActionType.PRESS_AND_RELEASE_MOUSE_BUTTON: self.mouse_button_press_and_release,
+            AtomicActionType.PLAY_AND_STOP_TONE: self.play_and_stop_tone,
+            # AtomicActionType.SET_DISPLAY_BRIGHTNESS: None,
+            # AtomicActionType.KEYBOARD_BRIGHTNESS: None,
+            # AtomicActionType.MACRO_END: None,
+            # AtomicActionType.MACRO_START: None,
+        }
 
     """
-    do_nothing = [
+    EXAMPLES = [
         {
             "action_type": AtomicActionType.WRITE_STRING,
             "value": "text to write"
         },
         {
-            "action_type": AtomicActionType.WRITE_KEYCODE,
-            "value": 12
+            "action_type": AtomicActionType.KEYCODE,
+            "value": Keycode.ESCAPE
+        },
+        {
+            "action_type": AtomicActionType.PRESS_AND_RELEASE_KEYCODE,
+            "value": Keycode.ESCAPE
         },
         {
             "action_type": AtomicActionType.DELAY,
@@ -35,11 +63,19 @@ class ActionList:
         },
         {
             "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
-            "value": 3
+            "value": ConsumerControlCode.MUTE
+        },
+        {
+            "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
+            "value": ConsumerControlCode.MUTE
         },
         {
             "action_type": AtomicActionType.MOUSE_BUTTON,
-            "value": 3
+            "value": Mouse.WHEEL
+        },
+        {
+            "action_type": AtomicActionType.PRESS_AND_RELEASE_MOUSE_BUTTON,
+            "value": Mouse.WHEEL
         },
         {
             "action_type": AtomicActionType.MOUSE_MOVEMENT,
@@ -50,11 +86,15 @@ class ActionList:
             }
         },
         {
-            "action_type": AtomicActionType.TONE,
+            "action_type": AtomicActionType.PLAY_AND_STOP_TONE,
             "value": {
-                "tone": 19,
+                "tone": 200,
                 "duration_ms": 1000
             }
+        },
+        {
+            "action_type": AtomicActionType.TONE,
+            "value": 100
         },
         {
             "action_type": AtomicActionType.OVERRIDE_ROTARY,
@@ -76,24 +116,6 @@ class ActionList:
             "value": 100
         },
     ]
-    
-    WRITE_STRING = 1,
-    WRITE_KEYCODE = 2,
-    DELAY = 3,
-    CONSUMER_CONTROL_CODE = 4,
-    MOUSE_BUTTON = 5,
-    MOUSE_MOVEMENT = 6,
-    TONE = 7,
-    OVERRIDE_ROTARY = 8,
-    INCREMENT_DISPLAY_BRIGHTNESS = 10,
-    INCREMENT_KEYBOARD_BRIGHTNESS = 14,
-    OVERRIDE_DEFAULT_DELAY = 15
-    
-    SET_DISPLAY_BRIGHTNESS = 9,
-    KEYBOARD_BRIGHTNESS = 11,
-    MACRO_START = 13,
-    MACRO_END = 12,
-    
     """
 
     def import_actions(self, list_of_actions: list, is_rotary_action: bool = False):
@@ -101,36 +123,7 @@ class ActionList:
             action_type = action.get("action_type")
             value = action.get("value")
 
-            if action_type == AtomicActionType.WRITE_STRING:
-                self.write_string(value)
-            elif action_type == AtomicActionType.WRITE_KEYCODE:
-                self.keycode_press(value)
-            elif action_type == AtomicActionType.PRESS_AND_RELEASE_KEYCODE:
-                self.keycode_press_and_release(value)
-            elif action_type == AtomicActionType.DELAY:
-                self.wait(value)
-            elif action_type == AtomicActionType.CONSUMER_CONTROL_CODE:
-                self.consumer_control_code_press(value)
-            elif action_type == AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE:
-                self.consumer_control_code_press_and_release(value)
-            elif action_type == AtomicActionType.MOUSE_BUTTON:
-                self.mouse_button_press(value)
-            elif action_type == AtomicActionType.PRESS_AND_RELEASE_MOUSE_BUTTON:
-                self.mouse_button_press_and_release(value)
-            elif action_type == AtomicActionType.MOUSE_MOVEMENT:
-                self.mouse_movement(value.get("x"), value.get("y"), value.get("wheel"))
-            elif action_type == AtomicActionType.TONE:
-                self.play_and_stop_tone(tone=value.get("tone"), duration_ms=value.get("duration_ms"))
-            elif action_type == AtomicActionType.OVERRIDE_ROTARY and not is_rotary_action:
-                action_cw = value.get("cw")
-                action_acw = value.get("acw")
-                self.override_rotary_encoder(action_cw, action_acw)
-            elif action_type == AtomicActionType.INCREMENT_DISPLAY_BRIGHTNESS:
-                self.increase_display_brightness(value)
-            elif action_type == AtomicActionType.INCREMENT_KEYBOARD_BRIGHTNESS:
-                self.increase_keyboard_brightness(value)
-            elif action_type == AtomicActionType.OVERRIDE_DEFAULT_DELAY:
-                self.override_default_delay(value)
+            self._parsers[action_type](value)
 
     def __increment_offset(self, delay_ms: int) -> None:
         self._offset += (delay_ms * MS_TO_NS)
@@ -205,7 +198,13 @@ class ActionList:
         self.mouse_button_press(button)
         self.mouse_button_release(button)
 
-    def mouse_movement(self, x=0, y=0, wheel=0):
+    def mouse_movement(self, dictionary):
+        assert isinstance(dictionary, dict)
+
+        x = dictionary['x'] if 'x' in dictionary else 0
+        y = dictionary['y'] if 'y' in dictionary else 0
+        wheel = dictionary['wheel'] if 'wheel' in dictionary else 0
+
         assert isinstance(x, int)
         assert isinstance(y, int)
         assert isinstance(wheel, int)
@@ -230,7 +229,12 @@ class ActionList:
     def stop_tone(self):
         self.play_tone(-1)
 
-    def play_and_stop_tone(self, tone, duration_ms):
+    def play_and_stop_tone(self, dictionary):
+        assert isinstance(dictionary, dict)
+
+        tone = dictionary['tone'] if 'tone' in dictionary else 0
+        duration_ms = dictionary['duration_ms'] if 'duration_ms' in dictionary else 0
+
         assert isinstance(tone, int)
         assert isinstance(duration_ms, int)
 
@@ -258,7 +262,14 @@ class ActionList:
         self._actions.append(action_to_add)
         self.__increment_offset(self._delay)
 
-    def override_rotary_encoder(self, action_to_exec_cw, action_to_exec_acw):
+    def override_rotary_encoder(self, dictionary):
+        if self._is_rotary_action:
+            return
+        assert isinstance(dictionary, dict)
+
+        action_to_exec_cw = dictionary["cw"] if "cw" in dictionary else list()
+        action_to_exec_acw = dictionary["acw"] if "acw" in dictionary else list()
+
         action_to_add = OverrideRotaryEncoder()
         action_to_add.timestamp = self._offset
         action_to_add.cw_method = action_to_exec_cw
