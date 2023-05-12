@@ -1,6 +1,6 @@
 class AtomicActionType:
     WRITE_STRING = 1
-    WRITE_KEYCODE = 2
+    KEYCODE = 2
     DELAY = 3
     CONSUMER_CONTROL_CODE = 4
     MOUSE_BUTTON = 5
@@ -17,6 +17,7 @@ class AtomicActionType:
     PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE = 16
     PRESS_AND_RELEASE_KEYCODE = 17
     PRESS_AND_RELEASE_MOUSE_BUTTON = 18
+    PLAY_AND_STOP_TONE = 19
 
 
 class RepetitionType:

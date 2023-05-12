@@ -10,7 +10,7 @@ action_write_string = [
 
 action_write_keycode = [
     {
-        "action_type": AtomicActionType.WRITE_KEYCODE,
+        "action_type": AtomicActionType.KEYCODE,
         "value": 12
     }
 ]
@@ -49,7 +49,7 @@ action_mouse_movement = [
 
 action_tone = [
     {
-        "action_type": AtomicActionType.TONE,
+        "action_type": AtomicActionType.PLAY_AND_STOP_TONE,
         "value": {
             "tone": 100,
             "duration_ms": 1000
@@ -59,7 +59,7 @@ action_tone = [
 
 action_tone1 = [
     {
-        "action_type": AtomicActionType.TONE,
+        "action_type": AtomicActionType.PLAY_AND_STOP_TONE,
         "value": {
             "tone": 200,
             "duration_ms": 1000
@@ -69,7 +69,7 @@ action_tone1 = [
 
 action_tone2 = [
     {
-        "action_type": AtomicActionType.TONE,
+        "action_type": AtomicActionType.PLAY_AND_STOP_TONE,
         "value": {
             "tone": 300,
             "duration_ms": 1000
@@ -174,7 +174,7 @@ action_example = [
         "value": "text to write"
     },
     {
-        "action_type": AtomicActionType.WRITE_KEYCODE,
+        "action_type": AtomicActionType.KEYCODE,
         "value": 12
     },
     {
@@ -198,7 +198,7 @@ action_example = [
         }
     },
     {
-        "action_type": AtomicActionType.TONE,
+        "action_type": AtomicActionType.PLAY_AND_STOP_TONE,
         "value": {
             "tone": 19,
             "duration_ms": 1000
