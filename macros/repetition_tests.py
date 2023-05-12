@@ -1,5 +1,6 @@
 from magic_macro.utils.enums import TriggerType, RepetitionType, AtomicActionType
 from adafruit_hid.keycode import Keycode
+from adafruit_hid.consumer_control_code import ConsumerControlCode
 
 action_tone = [
     {
@@ -121,6 +122,50 @@ board = {
                 }
             ],
 
+        },
+        {
+            "button": 5,
+            "label": "VOLS",
+            "color": 0x0099FF,
+            "actions": [
+                {
+                    "repetition_type": RepetitionType.ONE_TIME,
+                    "trigger_type": TriggerType.ON_INITIAL_PRESS,
+                    "combination": [
+                        {
+                            "action_type": AtomicActionType.OVERRIDE_ROTARY,
+                            "value": {
+                                "cw": [
+                                    {
+                                        "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                                        "value": ConsumerControlCode.VOLUME_INCREMENT
+                                    },
+                                    {
+                                        "action_type": AtomicActionType.PLAY_AND_STOP_TONE,
+                                        "value": {
+                                            "tone": 300,
+                                            "duration_ms": 50
+                                        }
+                                    }
+                                ],
+                                "acw": [
+                                    {
+                                        "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                                        "value": ConsumerControlCode.VOLUME_DECREMENT
+                                    },
+                                    {
+                                        "action_type": AtomicActionType.PLAY_AND_STOP_TONE,
+                                        "value": {
+                                            "tone": 100,
+                                            "duration_ms": 50
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ],
         }
     ]
 }
