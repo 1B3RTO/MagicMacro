@@ -218,7 +218,6 @@ class MacroBoardHandler:
 
             self._selected_board %= len(self._titles)
             selected_board = self._macro_boards[self._selected_board]
-            print(selected_board.get_names())
 
             self._display_handler.set_inside_macro_view(**selected_board.get_names())
             self._board_colors = selected_board.get_colors()
