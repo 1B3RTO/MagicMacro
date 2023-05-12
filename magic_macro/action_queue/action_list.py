@@ -20,14 +20,18 @@ class ActionList:
         self._offset = 0
 
     """
-    do_nothing = [
+    EXAMPLES = [
         {
             "action_type": AtomicActionType.WRITE_STRING,
             "value": "text to write"
         },
         {
             "action_type": AtomicActionType.WRITE_KEYCODE,
-            "value": 12
+            "value": Keycode.ESCAPE
+        },
+        {
+            "action_type": AtomicActionType.PRESS_AND_RELEASE_KEYCODE,
+            "value": Keycode.ESCAPE
         },
         {
             "action_type": AtomicActionType.DELAY,
@@ -35,11 +39,19 @@ class ActionList:
         },
         {
             "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
-            "value": 3
+            "value": ConsumerControlCode.MUTE
+        },
+        {
+            "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
+            "value": ConsumerControlCode.MUTE
         },
         {
             "action_type": AtomicActionType.MOUSE_BUTTON,
-            "value": 3
+            "value": Mouse.WHEEL
+        },
+        {
+            "action_type": AtomicActionType.PRESS_AND_RELEASE_MOUSE_BUTTON,
+            "value": Mouse.WHEEL
         },
         {
             "action_type": AtomicActionType.MOUSE_MOVEMENT,
@@ -52,7 +64,7 @@ class ActionList:
         {
             "action_type": AtomicActionType.TONE,
             "value": {
-                "tone": 19,
+                "tone": 200,
                 "duration_ms": 1000
             }
         },
@@ -76,24 +88,6 @@ class ActionList:
             "value": 100
         },
     ]
-    
-    WRITE_STRING = 1,
-    WRITE_KEYCODE = 2,
-    DELAY = 3,
-    CONSUMER_CONTROL_CODE = 4,
-    MOUSE_BUTTON = 5,
-    MOUSE_MOVEMENT = 6,
-    TONE = 7,
-    OVERRIDE_ROTARY = 8,
-    INCREMENT_DISPLAY_BRIGHTNESS = 10,
-    INCREMENT_KEYBOARD_BRIGHTNESS = 14,
-    OVERRIDE_DEFAULT_DELAY = 15
-    
-    SET_DISPLAY_BRIGHTNESS = 9,
-    KEYBOARD_BRIGHTNESS = 11,
-    MACRO_START = 13,
-    MACRO_END = 12,
-    
     """
 
     def import_actions(self, list_of_actions: list, is_rotary_action: bool = False):
