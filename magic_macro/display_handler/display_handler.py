@@ -43,11 +43,12 @@ class DisplayHandler:
                 )
             )
 
-    def menu_selector(self, encoder_position: int, menu_list: list):
+    def menu_selector(self, encoder_position: int, menu_list: list, highlight: bool = False):
         """
         Setup and return a group for the specific menu_list
         :param encoder_position: the int position of the rotary encoder
         :param menu_list: list with all the str names of all the boards available
+        :param highlight: whether to add or not an arrow beside the board name
         :return: the configured Group object
         """
         norm_encoder = encoder_position % len(menu_list)
@@ -59,6 +60,9 @@ class DisplayHandler:
 
         for i, elem in enumerate(menu_list[starting_index: starting_index + 4]):
             self._macro_selector_group[i + 1].text = elem
+
+        if highlight and len(menu_list) > 0:
+            self._macro_selector_group[selected_cell+1].text = f"> {self._macro_selector_group[selected_cell+1].text} <"
 
         self._macro_selector_group[0] = Rect(0, selected_cell * 16, DEFAULT_DISPLAY_WIDTH, 16, outline=0xffffff,
                                              stroke=1)

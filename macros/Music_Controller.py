@@ -55,7 +55,7 @@ board = {
         {
             "button": 0,
             "label": "PLAY",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -73,7 +73,7 @@ board = {
         {
             "button": 1,
             "label": "BACK",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -90,7 +90,7 @@ board = {
         {
             "button": 2,
             "label": "NEXT",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -107,7 +107,7 @@ board = {
         {
             "button": 3,
             "label": "STOP",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -124,7 +124,7 @@ board = {
         {
             "button": 4,
             "label": "REW",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -141,7 +141,7 @@ board = {
         {
             "button": 5,
             "label": "FF",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -158,7 +158,7 @@ board = {
         {
             "button": 7,
             "label": "SCROLL",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -170,7 +170,7 @@ board = {
         {
             "button": 9,
             "label": "MUTE",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -187,7 +187,7 @@ board = {
         {
             "button": 11,
             "label": "VOL",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,

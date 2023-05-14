@@ -3,9 +3,11 @@
 This is an improved version of the [Macropad Hotkeys](https://learn.adafruit.com/macropad-hotkeys/project-code) example
 from the Adafruit Learning System Guide. It is deeply inspired by the original version and aims to be helpful.
 
+<img alt="DEMO" height="" src="./assets/demo.gif" width="200"/>
+
 ## Requirements
 
-- The Adafruit Macropad RP2040 with CircuitPython 8.0.5 is required for this project, but it may work with other
+* The Adafruit Macropad RP2040 with CircuitPython 8.0.5 is required for this project, but it may work with other
   versions as well.
 
 ## Differences with the original
@@ -13,18 +15,18 @@ from the Adafruit Learning System Guide. It is deeply inspired by the original v
 While the boards themselves may look similar, there are significant differences in both the board selection phase and
 macro management. In this version:
 
-- A menu is available for board selection.
-- Every button can trigger one of four different press types:
+* A menu is available for board selection.
+* Every button can trigger one of four different press types:
     1. Initial press: the button is pressed regardless of duration.
     2. Short press: a press shorter than 500ms (configurable).
     3. Long press: a press longer than 500ms (configurable).
     4. Button release: every time the button is released.
-- Once a macro board is selected, the behavior of the rotary encoder can be modified, with an action assigned to both
+* Once a macro board is selected, the behavior of the rotary encoder can be modified, with an action assigned to both
   clockwise and counterclockwise rotations.
-- Repeat modes allow for a button to trigger a one-shot action, an action that is kept repeating as long as the button
+* Repeat modes allow for a button to trigger a one-shot action, an action that is kept repeating as long as the button
   is pressed, and an action that is repeated unless the button is pressed again.
-- The keyboard and display brightness can be modified.
-- Multiple actions can run concurrently (*with the possibility of conflicts between them*).
+* The keyboard and display brightness can be modified.
+* Multiple actions can run concurrently (*with the possibility of conflicts between them*).
 
 ## Set it up
 
@@ -33,6 +35,37 @@ Additionally, the `main_code.py` file must be copied into the root folder and re
 original version.
 
 The included macros are only for reference and can be used as a starting point when creating your own customized macros.
+
+### Additional Configuration
+
+Before running the macros you might want to take a look at all the parameters that can be modified to fit even more your
+needs. All these parameters can be found in `magic_macro/config.py`
+
+#### Display related:
+* `DEFAULT_DISPLAY_WIDTH`: display width in pixels
+* `DEFAULT_DISPLAY_HEIGHT`: display height in pixels
+* `CENTRAL_ANCHOR_POINT` = (0.5, 0)
+
+#### Macropad in general
+* `DEFAULT_DISPLAY_BRIGHTNESS`: initial display brightness
+* `DEFAULT_KEYBOARD_BRIGHTNESS`: initial keyboard brightness
+* `KEYBOARD_LAYOUT`: set a different keyboard layout class
+* `KEYCODE`: set a different keycode class
+
+#### Keyboard related
+* `LONG_DELAY_MS`: minimum length of a long key press
+
+#### Action Queue related
+* `DEFAULT_ACTION_DELAY_MS`: default delay in ms between two consecutive atomic actions
+
+#### Macro board related
+* `MACRO_FOLDER`: folder containing the macros
+* `DEFAULT_NONE_COLOR`: color to assign to empty buttons
+* `DEFAULT_COLOR_SELECTED_ROTARY_ACTION`: color to assign to the active rotary override
+* `DEFAULT_COLOR_ONE_TIME_ACTION`: color to assign to active buttons running a ONE_TIME macro
+* `DEFAULT_COLOR_KEEP_PRESSED`: color to assign to active buttons running a KEEP_PRESSED macro
+* `DEFAULT_COLOR_UNTIL_NEXT_PRESS`: color to assign to active buttons running a UNTIL_NEXT_PRESS macro
+* `DEFAULT_COLOR_PRESSED`: color to assign to pressed buttons
 
 ## Create your own macros
 
@@ -338,9 +371,9 @@ the pressed buttons!
 
 To define a combination for the mouse movement there are three attributes to set:
 
-- x
-- y
-- wheel
+* x
+* y
+* wheel
 
 The atomic action type is `MOUSE_MOVEMENT` and it is composed as follows:
 
@@ -378,8 +411,8 @@ combination_write_string = [
 
 The Macropad is also capable of emitting sounds. To use them you have two options:
 
-- `PLAY_AND_STOP_TONE`: define a duration in ms and an int tone to play
-- `TONE`: Start or Stop playing a sound (positive or negative int tone)
+* `PLAY_AND_STOP_TONE`: define a duration in ms and an int tone to play
+* `TONE`: Start or Stop playing a sound (positive or negative int tone)
 
 ```python
 from magic_macro.utils.enums import AtomicActionType
@@ -475,7 +508,7 @@ combination = [
             # N.B: no inception allowed here. You can't define a sub-combination which overrides again the encoder.
             "cw": [
                 {
-                    "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                    "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                     "value": ConsumerControlCode.VOLUME_INCREMENT
                 },
                 {
@@ -488,7 +521,7 @@ combination = [
             ],
             "acw": [
                 {
-                    "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                    "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                     "value": ConsumerControlCode.VOLUME_DECREMENT
                 },
                 {

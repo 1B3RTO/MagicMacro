@@ -46,7 +46,7 @@ board = {
         {
             "button": 0,
             "label": "TONE_KP",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.KEEP_PRESSED,
@@ -59,7 +59,7 @@ board = {
         {
             "button": 2,
             "label": "TONE_UN",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.UNTIL_NEXT_PRESS,
@@ -72,7 +72,7 @@ board = {
         {
             "button": 3,
             "label": "A",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -96,7 +96,7 @@ board = {
         {
             "button": 4,
             "label": "TASKS",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -126,7 +126,7 @@ board = {
         {
             "button": 5,
             "label": "VOLS",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -137,7 +137,7 @@ board = {
                             "value": {
                                 "cw": [
                                     {
-                                        "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                                        "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                                         "value": ConsumerControlCode.VOLUME_INCREMENT
                                     },
                                     {
@@ -150,7 +150,7 @@ board = {
                                 ],
                                 "acw": [
                                     {
-                                        "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                                        "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                                         "value": ConsumerControlCode.VOLUME_DECREMENT
                                     },
                                     {

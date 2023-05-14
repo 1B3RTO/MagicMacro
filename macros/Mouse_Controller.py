@@ -61,7 +61,7 @@ board = {
         {
             "button": 0,
             "label": "BTN_SX",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -74,7 +74,7 @@ board = {
         {
             "button": 1,
             "label": "WHEEL",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -91,7 +91,7 @@ board = {
         {
             "button": 2,
             "label": "BTN_RX",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -103,7 +103,7 @@ board = {
         {
             "button": 9,
             "label": "CTRL",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -130,7 +130,7 @@ board = {
         {
             "button": 10,
             "label": "ESC",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -147,7 +147,7 @@ board = {
         {
             "button": 11,
             "label": "SCREEN",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
