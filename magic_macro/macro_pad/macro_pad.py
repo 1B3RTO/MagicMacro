@@ -32,7 +32,7 @@ class MagicMacroPad(object):
         self._action_queue = ActionQueue(self._macropad)
 
     def __build_macropad(self):
-        if KEYBOARD_LAYOUT is None or KEYCODE is None:
+        if KEYBOARD_LAYOUT is None and KEYCODE is None:
             macropad = self._macropad_library()
         else:
             macropad = self._macropad_library(
