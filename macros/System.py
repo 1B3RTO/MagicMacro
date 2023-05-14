@@ -47,13 +47,13 @@ action_override_rotary_volume = [
         "value": {
             "cw": [
                 {
-                    "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                    "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                     "value": ConsumerControlCode.VOLUME_INCREMENT
                 }
             ],
             "acw": [
                 {
-                    "action_type": AtomicActionType.CONSUMER_CONTROL_CODE,
+                    "action_type": AtomicActionType.PRESS_AND_RELEASE_CONSUMER_CONTROL_CODE,
                     "value": ConsumerControlCode.VOLUME_DECREMENT
                 }
             ]
@@ -67,7 +67,7 @@ board = {
         {
             "button": 1,
             "label": "DISPLAY",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -80,7 +80,7 @@ board = {
         {
             "button": 4,
             "label": "KEYBOARD",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
@@ -92,7 +92,7 @@ board = {
         {
             "button": 7,
             "label": "VOLUME",
-            "color": 0x0099FF,
+            "color": 0xEB144C,
             "actions": [
                 {
                     "repetition_type": RepetitionType.ONE_TIME,
